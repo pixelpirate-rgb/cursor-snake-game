@@ -48,6 +48,46 @@ body {
   color: red;
   margin-top: 10px;
 }
+#dashboard {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle, #0f2027, #000);
+  color: #00ffcc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#score-table {
+  border-collapse: collapse;
+  margin: 20px 0;
+  width: 60%;
+}
+
+#score-table th, #score-table td {
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 12px;
+  text-align: center;
+}
+
+#score-table th {
+  background: rgba(0,255,204,0.2);
+}
+
+.highest {
+  color: gold;
+  font-weight: bold;
+}
+
+#dashboard button {
+  padding: 12px 30px;
+  border-radius: 25px;
+  border: none;
+  background: linear-gradient(45deg, #00ffcc, #00ffaa);
+  font-weight: bold;
+  cursor: pointer;
+}
 
 /* Start Screen */
 #start-screen {
