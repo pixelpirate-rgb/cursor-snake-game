@@ -22,6 +22,24 @@ body {
   justify-content: center;
   color: #00ffcc;
 }
+body {
+  margin: 0;
+  background: #111;
+  color: white;
+  font-family: Arial;
+  text-align: center;
+}
+
+input, button {
+  padding: 10px;
+  margin: 5px;
+}
+
+canvas {
+  background: black;
+  display: none;
+  margin: auto;
+}
 
 #dashboard { display: none; }
 
