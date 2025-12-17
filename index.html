@@ -1,50 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Cursor Snake Game</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>Cursor Snake Game</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- Login Screen -->
+<!-- LOGIN -->
 <div id="login-screen">
-  <h1>🔐 Login to Play</h1>
-  <input type="text" id="user-id" placeholder="Enter ID">
-  <input type="password" id="user-pass" placeholder="Enter Password">
-  <button id="login-btn">LOGIN</button>
+  <h1>🔐 Login</h1>
+  <input id="user-id" placeholder="User ID">
+  <input id="user-pass" type="password" placeholder="Password">
+  <button id="login-btn">Login</button>
   <p id="login-error"></p>
 </div>
+
 <!-- DASHBOARD -->
-<div id="dashboard" style="display:none;">
-<h1>🎮 Player Dashboard</h1>
+<div id="dashboard">
+  <h1>🎮 Player Dashboard</h1>
 
-<table id="score-table">
-  <thead>
-    <tr>
-      <th>Player ID</th>
-      <th>Score</th>
-      <th>Status</th>
-    </tr>
-  </thead>
-  <tbody></tbody>
-</table>
+  <table>
+    <thead>
+      <tr>
+        <th>Player</th>
+        <th>Score</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="score-body"></tbody>
+  </table>
 
-<button id="start-btn">START GAME</button>
+  <button id="start-btn">Start Game</button>
 </div>
 
-<!-- Start Screen -->
-<div id="start-screen" style="display: none;">
-  <h1>🐍 Cursor Snake</h1>
-  <button id="start-btn">START GAME</button>
-</div>
+<!-- SCORE -->
+<div id="score-board">Score: <span id="score">0</span></div>
 
-<!-- Score Board -->
-<div id="score-board" style="display: none;">
-  🐍 Score: <span id="score">0</span>
-</div>
-
-<div id="game" style="display: none;">
+<!-- GAME -->
+<div id="game">
   <div id="food"></div>
   <div class="cursor-glow"></div>
 </div>
@@ -52,4 +46,3 @@
 <script src="script.js"></script>
 </body>
 </html>
-
