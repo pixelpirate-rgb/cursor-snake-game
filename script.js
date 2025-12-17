@@ -28,6 +28,80 @@ loginBtn.addEventListener("click", () => {
   if (USERS[id] && USERS[id].pass === pass) {
     selectedColor = USERS[id].color;
     currentUser = id;
+let currentUser = "";
+let selectedColor = "";
+let score = 0;
+
+loginBtn.addEventListener("click", () => {
+  const id = userId.value;
+  const pass = userPass.value;
+
+  if (USERS[id] && USERS[id].pass === pass) {
+    currentUser = id;
+    selectedColor = USERS[id].color;
+
+    loginScreen.style.display = "none";
+    document.getElementById("dashboard").style.display = "flex";
+
+    loadDashboard();
+  } else {
+    loginError.innerText = "Invalid ID or Password";
+  }
+});
+function loadDashboard() {
+  const tableBody = document.querySelector("#score-table tbody");
+  tableBody.innerHTML = "";
+
+  let scores = JSON.parse(localStorage.getItem("scores")) || {};
+
+  let highestScore = 0;
+  let topPlayer = "";
+
+  for (let user in scores) {
+    if (scores[user] > highestScore) {
+      highestScore = scores[user];
+      topPlayer = user;
+    }
+  }
+
+  Object.keys(USERS).forEach(user => {
+    let tr = document.createElement("tr");
+
+    let userScore = scores[user] || 0;
+    let status = user === topPlayer ? "👑 Highest" : "";
+
+    tr.innerHTML = `
+      <td>${user}</td>
+      <td>${userScore}</td>
+      <td class="${user === topPlayer ? "highest" : ""}">${status}</td>
+    `;
+
+    tableBody.appendChild(tr);
+  });
+}
+function saveScore() {
+  let scores = JSON.parse(localStorage.getItem("scores")) || {};
+  scores[currentUser] = score;
+  localStorage.setItem("scores", JSON.stringify(scores));
+}
+score++;
+saveScore();
+document.addEventListener("keydown", e => {
+  if (e.key.toLowerCase() === "q") {
+    endGame();
+  }
+});
+
+function endGame() {
+  alert(`Game Over! Score: ${score}`);
+  saveScore();
+
+  game.style.display = "none";
+  scoreBoard.style.display = "none";
+  document.getElementById("dashboard").style.display = "flex";
+
+  loadDashboard();
+}
 
     // Load previous high score for this user
     score = parseInt(localStorage.getItem(`score_${currentUser}`)) || 0;
