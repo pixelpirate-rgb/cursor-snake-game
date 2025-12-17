@@ -17,14 +17,22 @@ let selectedColor = USERS["rishabh1"].color; // default
 let snake = [];
 let mouseX = 200, mouseY = 200;
 let score = 0;
+let currentUser = "";
+let gameRunning = false;
 
-// LOGIN CHECK
+// ------------------ LOGIN CHECK ------------------
 loginBtn.addEventListener("click", () => {
   const id = document.getElementById("user-id").value;
   const pass = document.getElementById("user-pass").value;
 
   if (USERS[id] && USERS[id].pass === pass) {
     selectedColor = USERS[id].color;
+    currentUser = id;
+
+    // Load previous high score for this user
+    score = parseInt(localStorage.getItem(`score_${currentUser}`)) || 0;
+    document.getElementById("score").textContent = score;
+
     loginScreen.style.display = "none";
     startScreen.style.display = "flex"; // show start screen
   } else {
@@ -39,6 +47,7 @@ startBtn.addEventListener("click", async () => {
   game.style.display = "block";
   scoreBoard.style.display = "block";
   initSnakeGame();
+  gameRunning = true;
 });
 
 // ------------------ SNAKE GAME LOGIC ------------------
@@ -47,6 +56,10 @@ const scoreEl = document.getElementById("score");
 const glow = document.querySelector(".cursor-glow");
 
 function initSnakeGame() {
+  // Clear previous snake if any
+  snake.forEach(p => game.removeChild(p.el));
+  snake = [];
+
   // Initial snake
   for (let i = 0; i < 10; i++) {
     const part = document.createElement("div");
@@ -70,6 +83,13 @@ function initSnakeGame() {
     glow.style.background = selectedColor.replace("linear-gradient", "radial-gradient(circle,") + ", transparent)";
   });
 
+  // Track Q key to end game
+  document.addEventListener("keydown", (e) => {
+    if (e.key.toLowerCase() === "q" && gameRunning) {
+      endGame();
+    }
+  });
+
   // Start game loop
   requestAnimationFrame(gameLoop);
 }
@@ -81,6 +101,8 @@ function placeFood() {
 }
 
 function gameLoop() {
+  if (!gameRunning) return; // stop loop if game ended
+
   // Move body
   for (let i = snake.length - 1; i > 0; i--) {
     snake[i].x += (snake[i - 1].x - snake[i].x) * 0.3;
@@ -112,6 +134,10 @@ function checkFoodCollision() {
   if (dist < 18) {
     score++;
     scoreEl.textContent = score;
+
+    // Save score for current user
+    localStorage.setItem(`score_${currentUser}`, score);
+
     growSnake();
     placeFood();
   }
@@ -127,3 +153,17 @@ function growSnake() {
   snake.push({ x: last.x, y: last.y, el: part });
 }
 
+// ------------------ END GAME ------------------
+function endGame() {
+  alert(`Game Over! 🐍 Your score for ${currentUser}: ${score}`);
+  gameRunning = false;
+
+  // Hide game & score, show start screen
+  game.style.display = "none";
+  scoreBoard.style.display = "none";
+  startScreen.style.display = "flex";
+
+  // Reset snake
+  snake.forEach(p => game.removeChild(p.el));
+  snake = [];
+}
