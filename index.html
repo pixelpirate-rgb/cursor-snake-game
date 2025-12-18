@@ -1,30 +1,37 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Multiplayer Cursor Snake</title>
+  <meta charset="UTF-8">
+  <title>Cursor Snake Game</title>
   <link rel="stylesheet" href="style.css">
-
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </head>
-
 <body>
-<div id="login">
-  <h2>Login</h2>
-  <input id="uid" placeholder="ID">
-  <input id="pass" type="password" placeholder="Password">
-  <button onclick="login()">Login</button>
-</div>
 
-<div id="dashboard" style="display:none">
-  <h2>Live Dashboard</h2>
-  <ul id="players"></ul>
-  <button onclick="startGame()">Start Game</button>
-</div>
+  <!-- Login Screen -->
+  <div id="login-screen">
+    <h1>🔐 Login to Play</h1>
+    <input type="text" id="user-id" placeholder="Enter ID">
+    <input type="password" id="user-pass" placeholder="Enter Password">
+    <button id="login-btn">LOGIN</button>
+    <p id="login-error"></p>
+  </div>
 
-<canvas id="game" width="800" height="500"></canvas>
+  <!-- Start Screen -->
+  <div id="start-screen" style="display: none;">
+    <h1>🐍 Cursor Snake</h1>
+    <button id="start-btn">START GAME</button>
+  </div>
 
-<script src="script.js"></script>
+  <!-- Score Board -->
+  <div id="score-board" style="display: none;">
+    🐍 Score: <span id="score">0</span>
+  </div>
+
+  <div id="game" style="display: none;">
+    <div id="food"></div>
+    <div class="cursor-glow"></div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
