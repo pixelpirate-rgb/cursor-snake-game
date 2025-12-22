@@ -1,10 +1,13 @@
 // ===============================
-// GLOBAL VARIABLES
+// GLOBALS
 // ===============================
 let score = 0;
 let highestScore = 0;
 let gameRunning = false;
 let userId = "";
+
+let snake = [];
+let snakeLength = 6;
 
 // ===============================
 // ELEMENTS
@@ -24,7 +27,7 @@ const highestScoreEl = document.getElementById("highest-score");
 document.getElementById("login-btn").addEventListener("click", () => {
   userId = document.getElementById("user-id").value.trim();
 
-  if (userId === "") {
+  if (!userId) {
     document.getElementById("login-error").innerText = "Enter ID";
     return;
   }
@@ -58,12 +61,11 @@ document.getElementById("start-btn").addEventListener("click", () => {
   startScreen.style.display = "none";
   scoreBoard.style.display = "block";
   game.style.display = "block";
-
   startNewGame();
 });
 
 // ===============================
-// GAME LOGIC
+// GAME START
 // ===============================
 function startNewGame() {
   score = 0;
@@ -71,10 +73,52 @@ function startNewGame() {
   gameRunning = true;
 
   document.querySelectorAll(".snake").forEach(e => e.remove());
+  createSnake(window.innerWidth / 2, window.innerHeight / 2);
 }
 
 // ===============================
-// SCORE UPDATE (CALL WHERE FOOD EATEN)
+// CREATE SNAKE
+// ===============================
+function createSnake(x, y) {
+  snake = [];
+
+  for (let i = 0; i < snakeLength; i++) {
+    const part = document.createElement("div");
+    part.className = "snake";
+    part.style.left = x + "px";
+    part.style.top = y + "px";
+    part.style.background = `rgba(0,255,204,${1 - i * 0.1})`;
+
+    game.appendChild(part);
+    snake.push({ el: part, x, y });
+  }
+}
+
+// ===============================
+// MOVE SNAKE WITH CURSOR
+// ===============================
+document.addEventListener("mousemove", (e) => {
+  if (!gameRunning) return;
+
+  let x = e.clientX;
+  let y = e.clientY;
+
+  for (let i = snake.length - 1; i > 0; i--) {
+    snake[i].x = snake[i - 1].x;
+    snake[i].y = snake[i - 1].y;
+  }
+
+  snake[0].x = x;
+  snake[0].y = y;
+
+  snake.forEach(s => {
+    s.el.style.left = s.x + "px";
+    s.el.style.top = s.y + "px";
+  });
+});
+
+// ===============================
+// SCORE UPDATE (CALL WHEN FOOD EATEN)
 // ===============================
 function updateScore() {
   score++;
@@ -82,7 +126,7 @@ function updateScore() {
 }
 
 // ===============================
-// EXIT GAME (Q KEY)
+// EXIT GAME (Q)
 // ===============================
 document.addEventListener("keydown", (e) => {
   if (e.key.toLowerCase() === "q" && gameRunning) {
